@@ -47,7 +47,7 @@
 
          EVDB.API.call("/events/search", oArgs, function(oData) {
 
-             // Note: this relies on the custom toString() methods below
+
              console.log(oData);
              Object.prototype.toString = function() {
                  var s = "{\n";
@@ -65,17 +65,22 @@
                  var title = results[i].title;
                  var time = results[i].start_time;
                  var venue = results[i].venue_name;
+                 var city = results[i].city_name;
+                 var state = results[i].region_abbr;
                  var address = results[i].venue_address;
+                 console.log(city + state);
 
                  var titleP = $("<div class = 'row title'>").text("Event: " + title);
                  var venueP = $("<div class = 'row venue'>").text("Venue: " + venue);
-                 var addressP = $("<div class = 'row address'>").text("Address: " + title);
+                 var addressP = $("<div class = 'row address'>").text("Address: " + address);
+                 var cityStateP = $("<div class = 'row cityState'>").text("City/State: " + city + ", " + state);
                  var timeP = $("<div class = 'row time'>").text("Time: " + time);
 
                  // eventDiv.append(thumb);
                  eventDiv.append(titleP);
                  eventDiv.append(venueP);
                  eventDiv.append(addressP);
+                 eventDiv.append(cityStateP);
                  eventDiv.append(timeP);
 
                  $("#eventInfo").append(eventDiv);

@@ -4,129 +4,112 @@
 <head>
     <meta charset="UTF-8">
     <title>Park-Place</title>
-    <!-- <link rel="stylesheet" type="text/css" href="reset.css">
- -->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.7.2/parsley.min.js"></script>
+    <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.7.2/parsley.js"></script>
+ -->
+    <!-- <script href="assets/javascript/parsley.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="assets/css/parsley.css">
 </head>
 
 <body>
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="form">
+            <form class="form" id="form" data-parsley-validate="">
                 <label for="location">Location</label>
-                <input type="text" class="form-control" id="location">
-            </div>
-            <div class="form">
+                <input type="text" class="form-control" id="location" data-parsley-required="true">
                 <label for="keyword">Keyword</label>
                 <input type="text" class="form-control" id="keyword">
-            </div>
-            <div class="form">
                 <label for="event">Type of Event</label>
                 <input type="text" class="form-control" id="event">
-            </div>
-            <input id="addInfo" type="submit" value="Submit">
+                <input id="addInfo" type="submit" value="Submit">
+            </form>
         </div>
         <div class="panel panel-default" id="eventInfo"></div>
     </div>
     <script type="text/javascript" src="http://api.eventful.com/js/api"></script>
     <script type="text/javascript">
-    window.onload = function() {
-
-        // var options = {
-        //     enableHighAccuracy: true,
-        //     timeout: 5000,
-        //     maximumAge: 0
-        // };
-
-        // function success(pos) {
-        //     var crd = pos.coords;
-
-        //     console.log('Your current position is:');
-        //     console.log(`Latitude : ${crd.latitude}`);
-        //     console.log(`Longitude: ${crd.longitude}`);
-        //     console.log(`More or less ${crd.accuracy} meters.`);
-        //     $("#location").val(crd);
-        // };
-
-        // function error(err) {
-        //     console.warn(`ERROR(${err.code}): ${err.message}`);
-        // };
-
-        // navigator.geolocation.getCurrentPosition(success, error, options);
-
-
-        function displayEvent() {
-
-            var location = $("#location").val().trim();
-            var keyword = $("#keyword").val().trim();
-            var event = $("#event").val().trim();
-
-            var oArgs = {
-
-                app_key: "N78vd3fpJCDPZCB7",
-
-                q: event,
-
-                where: location,
-
-                category: keyword,
-
-                page_size: 10,
-
-                sort_order: "popularity",
-
-            };
-
-            EVDB.API.call("/events/search", oArgs, function(oData) {
-
-                // Note: this relies on the custom toString() methods below
-                console.log(oData);
-                Object.prototype.toString = function() {
-                    var s = "{\n";
-                    for (var x in this) {
-                        s += "\t" + x + ": " + this[x].toString() + "\n";
-                    }
-                    s += "}";
-                    return s;
-                }
-                var results = oData.events.event;
-                for (var i = 0; i < results.length; i++) {
-                    var eventDiv = $("<div class = 'eventList panel-body'>");
-                    // var thumb = $("<img>")
-                    // thumb.attr("src", results[i].image.thumb.url);
-                    var title = results[i].title;
-                    var time = results[i].start_time;
-                    var venue = results[i].venue_name;
-                    var address = results[i].venue_address;
-
-                    var titleP = $("<div class = 'row title'>").text("Event: " + title);
-                    var venueP = $("<div class = 'row venue'>").text("Venue: " + venue);
-                    var addressP = $("<div class = 'row address'>").text("Address: " + title);
-                    var timeP = $("<div class = 'row time'>").text("Time: " + time);
-
-                    // eventDiv.append(thumb);
-                    eventDiv.append(titleP);
-                    eventDiv.append(venueP);
-                    eventDiv.append(addressP);
-                    eventDiv.append(timeP);
-
-                    $("#eventInfo").append(eventDiv);
-                }
-
-            });
-
-
-        }
-
-        $("#addInfo").on("click", function(event) {
+    $(document).ready(function() {
+        $("#form").on("submit", function(event) {
             event.preventDefault();
-            displayEvent();
+            $("#eventInfo").empty();
+            if ($(this).parsley().isValid()) {
+                displayEvent();
+                $(".form-control").val('');
+            }
         });
+    });
+
+    function displayEvent() {
+
+        var location = $("#location").val().trim();
+        var keyword = $("#keyword").val().trim();
+        var event = $("#event").val().trim();
+
+        var oArgs = {
+
+            app_key: "N78vd3fpJCDPZCB7",
+
+            q: event,
+
+            where: location,
+
+            category: keyword,
+
+            page_size: 10,
+
+            sort_order: "popularity",
+
+        };
+
+        EVDB.API.call("/events/search", oArgs, function(oData) {
+
+            // Note: this relies on the custom toString() methods below
+            console.log(oData);
+            Object.prototype.toString = function() {
+                var s = "{\n";
+                for (var x in this) {
+                    s += "\t" + x + ": " + this[x].toString() + "\n";
+                }
+                s += "}";
+                return s;
+            }
+            var results = oData.events.event;
+            for (var i = 0; i < results.length; i++) {
+                var eventDiv = $("<div class = 'eventList panel-body'>");
+                // var thumb = $("<img>")
+                // thumb.attr("src", results[i].image.thumb.url);
+                var title = results[i].title;
+                var time = results[i].start_time;
+                var venue = results[i].venue_name;
+                var city = results[i].city_name;
+                var state = results[i].region_abbr;
+                var address = results[i].venue_address;
+
+
+                var titleP = $("<div class = 'row title'>").text("Event: " + title);
+                var venueP = $("<div class = 'row venue'>").text("Venue: " + venue);
+                var addressP = $("<div class = 'row address'>").text("Address: " + address);
+                var cityStateP = $("<div class = 'row cityState'>").text("City/State: " + city + ", " + state);
+                var timeP = $("<div class = 'row time'>").text("Time: " + time);
+
+                // eventDiv.append(thumb);
+                eventDiv.append(titleP);
+                eventDiv.append(venueP);
+                eventDiv.append(addressP);
+                eventDiv.append(cityStateP);
+                eventDiv.append(timeP);
+
+                $("#eventInfo").append(eventDiv);
+            }
+
+        });
+
+
     }
     </script>
 </body>
