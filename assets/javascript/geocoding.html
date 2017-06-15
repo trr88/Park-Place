@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Parking Map</title>
+
+<!--Bootstrap goes here -->
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+</head>
+
+<body>
+	<div class = "container">
+    <!--User's previous locations-->
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class="panel panel-primary">
+      <!--Previous location info will be pushed here -->
+      				<div class = "row push">
+						<div class = "col-md-4"></div>
+						<div class = "col-md-4">
+							<div class="panel-heading">
+								<div class="form-group has-feedback">
+								    <input type="text" class="form-control new-location" id = "new-location" placeholder="New Location" />
+								    <i class="glyphicon glyphicon-search form-control-feedback"></i>
+								</div>
+							</div>							
+						</div> 
+						<div class = "col-md-4"></div>
+					</div>
+                </div>
+            </div>
+        </div>
+        <div class = "row">
+        	<div class = "col-md-12">
+	        	<div id="map" style="width: 100%; height: 480px;"></div>
+					  <div>
+					    <input id="address" type="textbox" value="Sydney, NSW">
+					    <input type="button" class ="submit" value="Encode">
+					  </div>
+	        	</div>
+		        	<button class = "btn" style = "position: absolute; right: 10%; bottom: 10%;">X</button>
+		    </div>
+        </div>
+ </div>              
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="brianmaps.js"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAykvhEyaahkeC4gM4-agk4ShVJ2sE3Xkw&callback=initMap">
+    </script>
+</body>
+	

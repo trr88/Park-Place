@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <!--css reset goes here -->
+
+<!--Bootstrap goes here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<!--secondary style sheet goes here-->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+<!--Link to firebase goes here-->
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+</head>
+<body>
+<div class = "container">
+    <!--User's previous locations-->
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class="panel panel-primary">
+      <!--Previous location info will be pushed here -->
+      				<div class = "row push">
+						<div class = "col-md-4">
+                            <div class="btn-group">
+                                  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Info <span class="caret"></span></button>
+                                  <ul class="dropdown-menu">
+                                    <li><a href="#">Home Page</a></li>
+                                    <li><a href="#">Map</a></li>
+                                    <li><a href="#">Events</a></li>
+                                    <li role="separator" class="divider"></li>
+                                <li><a href="#">Log Out</a></li>
+                              </ul>
+                            </div>                
+                        </div>
+						<div class = "col-md-4">
+							<div class="panel-heading">
+    								<div class="form-group has-feedback">
+    								    <input type="text" class="form-control new-search" id = "new-search" placeholder="New Location" />
+                                            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                    </div>
+								<!--<textarea class = "textarea address"></textarea>-->
+							</div>
+                                                                
+						</div> 
+						<div class = "col-md-4"></div>
+					</div>
+	                <div class="panel-heading locations">
+	                   <h4>Your Locations</h4>
+	                </div>
+                    <!--table goes here-->
+                    <table class="table">
+                      <tbody id = "new-data">
+                        <tr>
+                            <td id="eName">Test</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class = "row">
+        	<button class = "btn hover park-now" style = "position: absolute; right: 10%; bottom: 10%;">
+                
+            </button>
+            <button class = "btn hover report-space" style = "position: absolute; left: 10%; bottom: 10%;">X
+                <i class="glyphicon glyphicon-ok form-control-feedback"></i>
+            </button>
+        </div>
+ </div>              
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!--<script src="assets/javascript/appUserPage.js"></script>-->
+<script src="assets/javascript/navbar.js"></script>
+<script src="assets/javascript/appUserPage.js"></script>
+
+</body>
+</html>

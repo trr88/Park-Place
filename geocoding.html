@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Parking Map</title>
+
+<!--Bootstrap goes here -->
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+</head>
+
+<body>
+	<div class = "container">
+    <!--User's previous locations-->
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class="panel panel-primary">
+      <!--Previous location info will be pushed here -->
+      				<div class = "row push">
+						<div class = "col-md-4">
+							<div class="btn-group">
+								  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Info <span class="caret"></span></button>
+								  <ul class="dropdown-menu">
+								    <li><a href="#">Home Page</a></li>
+								    <li><a href="#">Events</a></li>
+								    <li><a href="#">Log-Out</a></li>
+								    <li role="separator" class="divider"></li>
+							    <li><a href="#">Separated link</a></li>
+							  </ul>
+							</div>							
+						</div>
+						<div class = "col-md-4">
+							<div class="panel-heading">
+								<div class="form-group has-feedback">
+								    <input type="text" class="form-control new-search" id = "new-search" placeholder="New search" />
+								    <i class="glyphicon glyphicon-search form-control-feedback"></i>
+								</div>
+							</div>							
+						</div> 
+						<div class = "col-md-4"></div>
+					</div>
+                </div>
+            </div>
+        </div>
+        <div class = "row">
+        	<div class = "col-md-12">
+				<div id="myModal" class="modal" style="display: none;position: fixed; z-index: 1; left: 0;top: 0;width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+
+				  <!-- Modal content -->
+				  <div class="modal-content" style= "background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+				    <span class="close" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+				    <p>Some text in the Modal..</p>
+				  </div>
+
+				</div>
+	        	<div id="map" style="width: 100%; height: 480px;"></div>
+					
+	        	</div>
+		        	<button class = "btn hover park-now" style = "position: absolute; right: 10%; bottom: 10%;">X</button>
+		        	<button class = "btn hover report-space" style = "position: absolute; left: 10%; bottom: 10%;">
+		        		<i class="glyphicon glyphicon-ok form-control-feedback">!</i>
+		        	</button>
+		    </div>
+        </div>
+ </div>              
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="assets/javascript/navbar.js"></script>
+<script src="assets/javascript/mappage.js"></script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAykvhEyaahkeC4gM4-agk4ShVJ2sE3Xkw&callback=initMap">
+    </script>
+</body>
+	

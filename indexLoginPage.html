@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Park-Place Log-in</title>
+
+	<!-- Bootstrap CDN-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!--link to reset.css and style.css -->
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+
+    <!-- Firebase Reference -->
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+	
+</head>
+<body class = "body">
+
+	<div class = "container">
+		<div class = "row header logIn">
+			<div class = "col-md-4"></div>
+			<div class = "col-md-4">
+				<h2>Log In<h2>				
+			</div> 
+			<div class = "col-md-4"></div>
+		</div>
+		<div class = "row">
+			<div class = "col-md-4"></div>
+			<div class = "col-md-4">
+				<label for="eMail">Email</label>
+				<input type="eMail" class= "textarea eMail-logIn">
+			</div> 
+			<div class = "col-md-4"></div>
+		</div>
+		<div class = "row">
+			<div class = "col-md-4"></div>
+			<div class = "col-md-4">
+				<div class = "error-message logIn-error"></div>
+				<label for="password">Password</label>
+				<input type="password" name="psw" class= "textarea password-logIn">
+				<button type="submit" class="btn btn-primary btn-large logIn" id="addData" value="submit">Submit</button>
+			</div> 
+			<div class = "col-md-4"></div>
+		</div>
+		<div class = "row header">
+			<div class = "col-md-4"></div>
+			<div class = "col-md-4">
+				<h2>Not A Member? Sign Up for Park Place...It's Free!</h2>		
+			</div> 
+			<div class = "col-md-4"></div>
+		</div>		
+		<div class = "row">
+			<div class = "col-md-4"></div>
+			<div class = "col-md-4">
+				<label for="parking name">Name</label>
+				<input type="name" class= "textarea name">
+				
+			</div> 
+			<div class = "col-md-4"></div>
+		</div>
+		<div class = "row">
+			<div class = "col-md-4"></div>
+			<div class = "col-md-4">
+				<label for="eMail">Email</label>
+				<input type="eMail" class= "textarea eMail">
+			</div> 
+			<div class = "col-md-4"></div>
+		</div>
+		<div class = "row">
+			<div class = "col-md-4"></div>
+			<div class = "col-md-4">
+				<div class = "error-message new-email"></div>
+				<label for="password">Password</label>
+				<input type="password" name="psw" class= "textarea password-registration">
+			</div> 
+			<div class = "col-md-4"></div>
+		</div>
+		<div class = "row">
+			<div class = "col-md-4"></div>
+			<div class = "col-md-4">
+				<div class = "error-message new-password"></div>
+				<label for="password">Confirm Password</label>
+				<input type="password" name="psw" class= "textarea password confirm-password">
+				<button type="submit" class="btn btn-primary btn-large addData" id="addData" value="submit">Submit</button>
+			</div> 
+			<div class = "col-md-4"></div>
+		</div>
+	</div>
+
+	<!-- JavaScript -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="assets/javascript/login.js"></script>
+
+</body>
+</html>
