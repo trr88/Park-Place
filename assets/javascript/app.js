@@ -18,9 +18,12 @@ var database = firebase.database();
 var map;
 
 // function to add markers to the map
-function addMarkerToMap(lat, long, htmlMarkupForInfoWindow){
+function addMarkerToMap(lat, long, infoWindowHtml){
   
-  var infowindow = new google.maps.InfoWindow(); 
+  var infowindow = new google.maps.InfoWindow({
+    content: infoWindowHtml,
+    maxWidth: 400
+  }); 
   var myLatLng = new google.maps.LatLng(lat, long); 
   var marker = new google.maps.Marker({ 
     position: myLatLng,
@@ -29,10 +32,10 @@ function addMarkerToMap(lat, long, htmlMarkupForInfoWindow){
     animation: google.maps.Animation.DROP, 
     })
   
-  google.maps.event.addListener(marker, 'click', (function(marker, markerCount) { 
-    return function() { infowindow.setContent(htmlMarkupForInfoWindow); infowindow.open(map, marker); }
-    })
-  )
+  marker.addListener('click', function(){
+    infowindow.open(map, marker); 
+  })
+      
 }
 
 function initMap() {
@@ -85,8 +88,7 @@ navigator.geolocation.getCurrentPosition(function(position) {
   var location = new google.maps.LatLng(position.coords.latitude,position.coords.longitude)
   
   map.panTo(location);
-  
-  
+   
 });
 
 // update map with all posts from Firebase
@@ -94,9 +96,18 @@ database.ref('Posts').on('child_added', function(snap){
 
 // each child/post in database
 var currentPost = snap.val();
+  console.log(currentPost);
+  
+// content for each Info Window
+var contentString = 
+    '<div><h2>Parking Available</h2><p class="lead">'
+    + currentPost.comment +'</p>'
+    + '<p>Posted by '+currentPost.postedBy+' at '+currentPost.timestamp+'</p> <p><strong>Price: </strong>'
+    + currentPost.price +' <strong>Spots Available:</strong> '
+    + currentPost.spotsLeft +'</p></div>';
 
 //Add each loaction to the map along with markers
-addMarkerToMap(currentPost.location[0],currentPost.location[1],currentPost.comment);
+addMarkerToMap(currentPost.location[0],currentPost.location[1],contentString);
 
 })
   
