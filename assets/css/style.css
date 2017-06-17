@@ -2,9 +2,6 @@
 	box-sizing: border-box;
 	height: 100px;
 }
-    
-
-
 
 .jumbotron{
 	background-image: url(../images/parking-meter-1920a.jpg);
@@ -33,7 +30,7 @@
 	margin-top: 20px;
 }
 #events{
-  height: 100%;
+  height: 600px;
   overflow-x: auto;
 }
 .error-message {
@@ -44,8 +41,6 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
-
-
 
 .siteCopy {
 	color: #5B6575;

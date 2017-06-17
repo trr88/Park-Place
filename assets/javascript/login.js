@@ -24,12 +24,13 @@ $('#sign-out').on('click', userSignOut);
 
 // function to sign in a user
 function userSignIn() {
+  console.log('sign-in')
   // if no current user exists, sign in user 
   if (!firebase.auth().currentUser) {
     // Create provider
     var provider = new firebase.auth.GoogleAuthProvider();
 
-    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    //provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
     // Google Sign-in
     firebase.auth().signInWithPopup(provider).then(function(result){
       // This gives you a Google Access Token. You can use it to access the Google API.
@@ -79,9 +80,17 @@ firebase.auth().onAuthStateChanged(function(user) {
     var uid = user.uid;
     var providerData = user.providerData;
     
+    $('#sign-in').hide();
+    $('#sign-out').show();
+    
+    $('#display-name').text(', '+displayName);
   } 
   else{
     // User is signed out.
     // possible signout actions
+    $('#sign-out').hide();
+    $('#sign-in').show();
+    
+    $('#display-name').empty();
   }
 })
