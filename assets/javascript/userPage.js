@@ -1,120 +1,22 @@
-// Initialize Firebase
-// Nick's Firebase DB
-var config = {
-  apiKey: "AIzaSyDWDRxPYpZijnzqD2U5xSJaSwn69Ki-sfg",
-  authDomain: "park-place-ca2a7.firebaseapp.com",
-  databaseURL: "https://park-place-ca2a7.firebaseio.com",
-  projectId: "park-place-ca2a7",
-  storageBucket: "park-place-ca2a7.appspot.com",
-  messagingSenderId: "29054600010"
-};
+// Configured in Login.js file
+var database = firebase.database();
 
-firebase.initializeApp(config);
-
-window.onload = function () {
-    userPage.getLocation();
-    userPage.initMap();
-  $(".post-button").on("click", userPage.postLocation) 
-
-};
-
-
-var database = firebase.database(); 
-
-    
-//referencing the database once to get the values we need to append. 
- database.ref("/users").once('value', function(snapshot){
-      var user = firebase.auth().currentUser;
-      var userId = user.uid;
-
-//appending new table elements for "posts"
-      var posts = $('<div class="panel-heading">');
-      var postsHeading = $('<h4>').text("Your Posts");
-          postsHeading.appendTo(posts);
-      var newTable = $('#new-data');
-          posts.appendTo(newTable);
-
-//referencing the database for posts and then executing a .forEach loop 
-//in order to get the values inside each post.  
-      var query = firebase.database().ref("/posts").orderByKey();
-      query.once("value")
-          .then(function(snap) {
-            var numEntries = 0;
-                snap.forEach(function(childSnap) {
-                  //limiting number of results to ten.
-                  if (numEntries > 9) {
-                      return;
-                  }
-                  //checking to make sure the values were posted by this user.
-                  else if (childSnap.val().postedBy === userId) {
-                    console.log("worked")
-                      numEntries++;
-                      var latitude = childSnap.val().latitude;
-                      var longitude = childSnap.val().longitude;
-                      var latLng = new google.maps.LatLng(coords[1],coords[0]);
-                      var marker = new google.maps.Marker({
-                          position: latLng,
-                          map: map
-                  });
-                  //appending new table elements for each of the last ten posts.
-                      var newTableRow = $('<tr>')  
-                      var newlocation = $('<td>').text(childSnap.val().location).appendTo(newTableRow); 
-                      var newPrice = $('<td>').text(childSnap.val().price).appendTo(newTableRow);
-                      var newDate = $('<td>').text(childSnap.val().dateAdded).appendTo(newTableRow);
-                      var newTime = $('<td>').text(childSnap.val().timeAdded).appendTo(newTableRow); 
-                      newTableRow.appendTo($('#new-data'));
-                  }
-                });
-          });
-      
-      //process is repeated here for events, where 'posts'
-      //is replaced by 'events' in the heading, the reference folder has changed to get "events", 
-      //and values queried are a bit different. 
-     
-      var events = $('<div class="panel-heading events">')
-      var eventsHeading = $('<h4>').text("Your Events");
-          eventsHeading.appendTo(posts);
-          events.appendTo(newTable);
-      var query = firebase.database().ref("/users/" + userId +"/events").orderByKey();
-      query.once("value")
-          .then(function(snap) {
-            var numEntries = 0;
-            snap.forEach(function(childSnap) {
-              if (numEntries > 9) {
-                return;
-              }
-              else {
-                  numEntries++;
-                  var newTableRow = $('<tr>')  
-                  var newlocation = $('<td>').text(childSnap.val().location).appendTo(newTableRow); 
-                  var newDate = $('<td>').text(childSnap.val().date).appendTo(newTableRow); 
-                  var newComments = $('<td>').text(childSnap.val().comments).appendTo(newTableRow); 
-                  newTableRow.appendTo($('#new-data'));
-              }
-            });
-          }); 
-  }); 
-
-
-//takes the inputs from the "post space" modal and uploads them to firebase.
-//along with the date added and the time added from moment.js.  
- 
-
-
+// current variables
 var myLat;
 var myLong; 
 var userPageMap;
 
+// userPage object with map initialization and post submittal
 var userPage = {
-    
+    // initialize user page map
     initMap: function() {
         UserPageMap = new google.maps.Map(document.getElementById('map'), {
-          zoom: 2,
-          center: new google.maps.LatLng(2.8,-187.3),
+          zoom: 10,
+          center: new google.maps.LatLng(41.4993,-81.6944),
           mapTypeId: 'terrain'
         });
       },
-
+    // checks if browser supports geolocation, if so ask for current location
     getLocation: function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(userPage.showPosition);
@@ -122,32 +24,99 @@ var userPage = {
             alert("Geolocation is not supported by this browser.");
         }
     },
-
+    // get current position
     showPosition: function (position) {
         myLat = position.coords.latitude 
         myLong = position.coords.longitude;
     },
-
+    // get post info from form and and push to database
     postLocation : function() {
-        var price = $(".price").val();  
-        var numSpots = $(".numSpots").val();
-        var comments = $(".comments").val();
+        var price = $("#price").val();  
+        var numSpots = $("#numSpots").val();
+        var comments = $("#comments").val();
 
-        database.ref("/posts").push({
-          latitude: myLat,
-          longitude: myLong,
+        database.ref("Posts").push({
+          location:[myLat,myLong],
+          postedBy: currentUser.uid,
           price: price, 
-          numSpots: numSpots, 
-          comments: comments,
+          spotsLeft: numSpots, 
+          comment: comments,
           dateAdded: firebase.database.ServerValue.TIMESTAMP,
-          timeAdded: moment().format('LT'),
+          timestamp: moment().format('ddd MMM Do, hh:mm a'),
+        },function(){
+          $('.alert').html("<p>Post failed too be uploaded</p>");
         });
-        $('.alert').html("<p>You Posted!</p>");
-        setTimeout(userPage.removeAlert(), 1000);
+        setTimeout(userPage.removeAlert, 1000);
+        
+        var location = new google.maps.LatLng(myLat,myLong);
+        userPageMap.panTo(location);
     },
-
+    // code to remove notification
     removeAlert : function () {
-        $('.alert').html("");
-
-    },
+      $('.alert').html("");
+    }
   }
+// when page is fully loaded
+window.onload = function () {
+  userPage.initMap();
+  $("#post-button").on("click", userPage.postLocation); 
+  $("#modal-button").on("click", userPage.getLocation); 
+};
+  
+// user state observer 
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user){
+    // User is signed in.
+    // update current user info
+    currentUser = user;
+  } 
+  else{
+    // User is signed out.
+    // possible signout actions
+    // empty user information
+    currentUser = {};
+  }
+})
+  
+  
+// update user page with all posts from Firebase
+database.ref('Posts').on('child_added', function(snap){
+
+  // each child/post in database
+  var currentPost = snap.val();
+  
+  // if a post author exists and if a current user exists 
+  if(currentPost.postedBy && currentUser.uid){
+    // shows the posts that only the current user has posted
+    if(currentPost.postedBy === currentUser.uid){
+      // content for each post
+      var contentString = '<div class="panel panel-default"><div class="panel-body">'
+          +'<div><h2>Post</h2><p class="lead">'
+          + currentPost.comment +'</p><p><strong>Price: '
+          + currentPost.price +'  </strong><strong>Spots Available:</strong> '
+          + currentPost.spotsLeft +'</p></div>'
+          + '<p>Posted by '+currentPost.postedBy+' at '+ currentPost.timestamp +
+          '</p></div></div>';
+      // append each of current users posts to html
+      $('#user-posts').append(contentString);
+    }
+  }
+  // coordinates of each post
+  var lat = currentPost.location[0];
+  var lng = currentPost.location[1];
+  
+  // place parking markers
+  userPageMarkers(lat,lng);
+
+})
+
+// function to place parking markers
+function userPageMarkers(lat, lng){
+  var myLatLng = new google.maps.LatLng(lat, lng);
+  var marker = new google.maps.Marker({ 
+    position: myLatLng,
+    icon: 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png',
+    map: userPageMap, 
+    animation: google.maps.Animation.DROP, 
+  })
+}
